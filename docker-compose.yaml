@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  be-project-dam501:
+    image: tiangolo/uvicorn-gunicorn-fastapi:python3.11-slim
+    container_name: be-project-dam501
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - proxy
+    volumes:
+      - ./backend/app:/app
+    ports:
+      - "8000:8000"
+    stdin_open: true
+    tty: true
+    command: sh -c "pip install --no-cache-dir -r requirements.txt && uvicorn app:app --host 0.0.0.0 --port 8000"
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=proxy'
+      - 'traefik.http.routers.be-project-dam501.entrypoints=websecure'
+      - 'traefik.http.routers.be-project-dam501.tls=true'
+      - 'traefik.http.routers.be-project-dam501.tls.certresolver=letsencrypt'
+      - 'traefik.http.routers.be-project-dam501.rule=Host(`api.project-dam501.mse20hcm.top`)'
+      - 'traefik.http.services.be-project-dam501.loadbalancer.server.port=8000'
+
+  fe-project-dam501:
+    image: nginx:latest
+    container_name: fe-project-dam501
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./frontend:/usr/share/nginx/html/
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.fe-project-dam501.entrypoints=websecure"
+      - "traefik.http.routers.fe-project-dam501.tls=true"
+      - "traefik.http.routers.fe-project-dam501.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.fe-project-dam501.rule=Host(`project-dam501.mse20hcm.top`)"
+      - "traefik.http.services.fe-project-dam501.loadbalancer.server.port=80"
+
+networks:
+  proxy:
+    external: true

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+  <!-- [Head] start --><head>
+    <title>Sample Page | Light Able Admin &amp; Dashboard Template</title>
+    <!-- [Meta] -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="description"
+      content="Light Able admin and dashboard template offer a variety of UI elements and pages, ensuring your admin panel is both fast and effective."
+    />
+    <meta name="author" content="phoenixcoded" />
+
+    <!-- [Favicon] icon -->
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
+    <!-- [Google Font : Public Sans] icon -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <!-- [phosphor Icons] https://phosphoricons.com/ -->
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- [Tabler Icons] https://tablericons.com -->
+    <link rel="stylesheet" href="css/tabler-icons.min.css" />
+    <!-- [Feather Icons] https://feathericons.com -->
+    <link rel="stylesheet" href="css/feather.css" />
+    <!-- [Font Awesome Icons] https://fontawesome.com/icons -->
+    <link rel="stylesheet" href="css/fontawesome.css" />
+    <!-- [Material Icons] https://fonts.google.com/icons -->
+    <link rel="stylesheet" href="css/material.css" />
+    <link rel="stylesheet" href="css/datatables.min.css" />
+    <!-- [Template CSS Files] -->
+    <link rel="stylesheet" href="css/style_1.css" id="main-style-link" />
+    <link rel="stylesheet" href="css/style-preset.css" />
+  </head>
+  <!-- [Head] end -->
+  <!-- [Body] Start -->
+
+  <body
+    data-pc-preset="preset-1"
+    data-pc-sidebar-theme="light"
+    data-pc-sidebar-caption="true"
+    data-pc-direction="ltr"
+    data-pc-theme="light"
+    data-pc-layout="horizontal"
+  >
+    <!-- [ Pre-loader ] start -->
+    <div class="loader-bg">
+      <div class="loader-track">
+        <div class="loader-fill"></div>
+      </div>
+    </div>
+    <!-- [ Pre-loader ] End -->
+    <nav class="pc-sidebar">
+      <div class="navbar-wrapper">
+        <div class="m-header">
+          <a href="../dashboard/index.html" class="b-brand text-primary">
+            <!-- ========   Change your logo from here   ============ -->
+            <img
+              src="img/logo.png"
+              alt="logo image"
+              class="logo-lg"
+              width="100"
+            />
+          </a>
+        </div>
+
+        <div class="card pc-user-card">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <img
+                  src="img/author.png"
+                  alt="user-image"
+                  class="user-avtar wid-45 rounded-circle"
+                />
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <div class="dropdown">
+                  <a
+                    href="#"
+                    class="arrow-none dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    data-bs-offset="0,20"
+                  >
+                    <div class="d-flex align-items-center">
+                      <div class="flex-grow-1 me-2">
+                        <h6 class="mb-0">Administrator</h6>
+                        <small>Administrator</small>
+                      </div>
+                      <div class="flex-shrink-0">
+                        <div class="btn btn-icon btn-link-secondary avtar">
+                          <i class="ph-duotone ph-windows-logo"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- [ Header Topbar ] start -->
+    <header class="pc-header">
+      <div class="header-wrapper">
+        <!-- [Mobile Media Block] start -->
+        <div class="me-auto pc-mob-drp">
+          <ul class="list-unstyled">
+            <!-- ======= Menu collapse Icon ===== -->
+            <li class="pc-h-item pc-sidebar-collapse">
+              <a href="#" class="pc-head-link ms-0" id="sidebar-hide">
+                <i class="ti ti-menu-2"></i>
+              </a>
+            </li>
+            <li class="pc-h-item pc-sidebar-popup">
+              <a href="#" class="pc-head-link ms-0" id="mobile-collapse">
+                <i class="ti ti-menu-2"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <!-- [Mobile Media Block end] -->
+        <div class="ms-auto">
+          <ul class="list-unstyled">
+            <li class="dropdown pc-h-item header-user-profile">
+              <a
+                class="pc-head-link dropdown-toggle arrow-none me-0"
+                data-bs-toggle="dropdown"
+                href="#"
+                role="button"
+                aria-haspopup="false"
+                data-bs-auto-close="outside"
+                aria-expanded="false"
+              >
+                <img src="img/author.png" alt="user-image" class="user-avtar" />
+              </a>
+              <div
+                class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown"
+              >
+                <div
+                  class="dropdown-header d-flex align-items-center justify-content-between"
+                >
+                  <h5 class="m-0">Profile</h5>
+                </div>
+                <div class="dropdown-body">
+                  <div
+                    class="profile-notification-scroll position-relative"
+                    style="max-height: calc(100vh - 225px)"
+                    data-simplebar="init"
+                  >
+                    <div class="simplebar-wrapper" style="margin: 0px">
+                      <div class="simplebar-height-auto-observer-wrapper">
+                        <div class="simplebar-height-auto-observer"></div>
+                      </div>
+                      <div class="simplebar-mask">
+                        <div
+                          class="simplebar-offset"
+                          style="right: 0px; bottom: 0px"
+                        >
+                          <div
+                            class="simplebar-content-wrapper"
+                            tabindex="0"
+                            role="region"
+                            aria-label="scrollable content"
+                            style="height: auto; overflow: hidden"
+                          >
+                            <div class="simplebar-content" style="padding: 0px">
+                              <ul class="list-group list-group-flush w-100">
+                                <li class="list-group-item">
+                                  <a href="#" class="dropdown-item">
+                                    <span class="d-flex align-items-center">
+                                      <i class="ph-duotone ph-plus-circle"></i>
+                                      <span>Add account</span>
+                                    </span>
+                                  </a>
+                                  <a href="#" class="dropdown-item">
+                                    <span class="d-flex align-items-center">
+                                      <i class="ph-duotone ph-power"></i>
+                                      <span>Logout</span>
+                                    </span>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="simplebar-placeholder"
+                        style="width: 0px; height: 0px"
+                      ></div>
+                    </div>
+                    <div
+                      class="simplebar-track simplebar-horizontal"
+                      style="visibility: hidden"
+                    >
+                      <div
+                        class="simplebar-scrollbar"
+                        style="width: 0px; display: none"
+                      ></div>
+                    </div>
+                    <div
+                      class="simplebar-track simplebar-vertical"
+                      style="visibility: hidden"
+                    >
+                      <div
+                        class="simplebar-scrollbar"
+                        style="height: 0px; display: none"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    <!-- [ Header ] end -->
+
+    <!-- [ Main Content ] start -->
+    <div class="pc-container">
+      <div class="pc-content">
+        <div class="page-header">
+          <div class="page-block">
+            <div class="row align-items-center">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-2">
+                    <div class="card">
+                      <div class="card-body">
+                        <label class="form-label" for="selectJobCategory"
+                          >Job Category</label
+                        >
+                        <select
+                          id="selectJobCategory"
+                          class="form-select"
+                          aria-label="Default select example"
+                        >
+                          <option value="">ALL</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-10">
+                    <div class="row">
+                      <!-- [ Top Categories Postings ] start -->
+                      <div class="col-md-6">
+                        <div class="card">
+                          <div class="card-body">
+                            <canvas id="topCategoriesPostingsChart"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- [ Top Categories Postings ] end -->
+                      <!-- [ Top Industries Companies ] start -->
+                      <div class="col-md-6">
+                        <div class="card">
+                          <div class="card-body">
+                            <canvas id="topIndustriesCompaniesChart"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- [ Top Industries Companies ] end -->
+                    </div>
+                    <div class="row">
+                      <!-- [ WordCloud ] start -->
+                      <div class="col-md-6">
+                        <div class="card">
+                          <div class="card-body">
+                            <img
+                              alt=""
+                              id="wordCloudSkills"
+                              style="width: 100%; object-fit: cover"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- [ WordCloud ] end -->
+                      <!-- [ Top Companies Postings ] start -->
+                      <div class="col-md-6">
+                        <div class="card">
+                          <div class="card-body">
+                            <canvas id="topCompaniesPostingsChart"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- [ Top Companies Postings ] end -->
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="card">
+                          <div class="card-body">
+                            <div class="table-responsive">
+                              <table
+                                id="tableJobs"
+                                class="table table-striped table-bordered dataTable"
+                                style="width: 100%"
+                              ></table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+    <!-- [ Modal Job Detail ] start -->
+    <div
+      class="modal fade modal-animate anim-fade-in-scale show"
+      id="jobDetailModal"
+      aria-modal="true"
+      role="dialog"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Job Detail</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-3">Title</div>
+              <div class="col-md-9">
+                <p id="jobTitle"></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">Company Name</div>
+              <div class="col-md-9">
+                <p id="jobCompanyName"></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">Industry</div>
+              <div class="col-md-9">
+                <p id="jobIndustry"></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">Description</div>
+              <div class="col-md-9">
+                <p id="jobDescription"></p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary shadow-2">
+              Save changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Required Js -->
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/simplebar.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/i18next.min.js"></script>
+    <script src="js/i18nextHttpBackend.min.js"></script>
+    <script src="js/custom-font.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/multi-lang.js"></script>
+    <script src="js/feather.min.js"></script>
+    <script src="js/choices.min.js"></script>
+    <script src="js/datatables.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"
+      integrity="sha512-ZwR1/gSZM3ai6vCdI+LVF1zSq/5HznD3ZSTk7kajkaj4D292NLuduDCO1c/NT8Id+jE58KYLKT7hXnbtryGmMg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <!-- [Body] end -->
+
+    <script src="js/mse_dev.js"></script>
+  </body>
+</html>
