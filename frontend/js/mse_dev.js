@@ -9,6 +9,14 @@ const getJobCategories = async () => {
   });
 };
 
+const getIndustries = async () => {
+  return $.ajax({
+    url: `${apiHost}/api/v1/industries`,
+    async: true,
+    method: "GET",
+  });
+};
+
 const getWordCloudSkills = async (category = "") => {
   return $.ajax({
     url: `${apiHost}/api/v1/resume/skills/wordcloud?category=${category}`,
@@ -48,12 +56,30 @@ const getTopIndustriesCompanies = async () => {
 };
 
 const getJobs = (limit = 10, offset = 0) => {
+  const industry = $("#selectIndustry").val();
   let param = {
     limit: limit,
     offset: offset,
+    industry: industry,
   };
   return $.ajax({
     url: `${apiHost}/api/v1/jobs?${$.param(param, true)}`,
+    method: "GET",
+    async: true,
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+  });
+};
+
+const getResumes = (limit = 10, offset = 0) => {
+  const category = $("#selectJobCategory").val();
+  let param = {
+    limit: limit,
+    offset: offset,
+    category: category,
+  };
+  return $.ajax({
+    url: `${apiHost}/api/v1/resumes?${$.param(param, true)}`,
     method: "GET",
     async: true,
     contentType: "application/json; charset=utf-8",
@@ -71,6 +97,16 @@ const getJobDetail = (id) => {
   });
 };
 
+const getResumeDetail = (id) => {
+  return $.ajax({
+    url: `${apiHost}/api/v1/resumes/${id}`,
+    method: "GET",
+    async: true,
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+  });
+};
+
 const updateStatistics = async () => {
   const category = $("#selectJobCategory").val();
   try {
@@ -79,6 +115,8 @@ const updateStatistics = async () => {
       const url = URL.createObjectURL(blob);
       $("#wordCloudSkills").attr("src", url);
     });
+
+    initTableResumes();
 
     getTopCompaniesPostings().then((response) => {
       const data = response.data;
@@ -121,7 +159,7 @@ const updateStatistics = async () => {
       };
 
       const ctx = document.getElementById("topCompaniesPostingsChart");
-      const myChart = new Chart(ctx, config);
+      new Chart(ctx, config);
     });
   } catch (error) {
     console.log("updateStatistics ~ error:", error);
@@ -186,6 +224,7 @@ function shuffle(array) {
   }
   return array;
 }
+
 const showChartIndustriesCompanies = async () => {
   try {
     getTopIndustriesCompanies().then((response) => {
@@ -223,7 +262,7 @@ const showChartIndustriesCompanies = async () => {
       };
 
       const ctx = document.getElementById("topIndustriesCompaniesChart");
-      const myChart = new Chart(ctx, config);
+      new Chart(ctx, config);
     });
   } catch (error) {
     console.log("showChartIndustriesCompanies ~ error:", error);
@@ -233,17 +272,166 @@ const viewJob = async (job_id) => {
   if (!job_id) return;
   const jobDetail = await getJobDetail(job_id);
   const job = jobDetail.data;
+
   console.log("viewJob ~ job:", job);
+
+  // reset info
   $("#jobTitle").text("");
   $("#jobCompanyName").text("");
   $("#jobIndustry").text("");
   $("#jobDescription").text("");
+  // set info
   $("#jobTitle").text(job.title);
   $("#jobCompanyName").text(job.company_name);
   $("#jobIndustry").text(job.industry);
   $("#jobDescription").text(job.description);
+
+  // set id
+  $("#matchResumesBtn").attr("data-id", job_id);
+  // show modal
   $("#jobDetailModal").modal("show");
 };
+
+const initTableJobs = () => {
+  $("#tableJobs").DataTable({
+    lengthChange: true,
+    pageLength: 10,
+    paging: true,
+    processing: true,
+    destroy: true,
+    serverSide: true,
+    sort: false,
+    searching: false,
+    ajax: $.fn.dataTable.pipeline({
+      pages: 5,
+      func: getJobs,
+    }),
+    columns: [
+      {
+        title: "Title",
+        data: "title",
+        render: function (data, type, row, meta) {
+          return `<a href="javascript:void(0)" onClick="viewJob('${row.job_id}')">${data}</a>`;
+        },
+      },
+      {
+        title: "Company",
+        data: "company_name",
+      },
+      {
+        title: "Industry",
+        data: "industry",
+      },
+    ],
+  });
+};
+
+const initTableResumes = () => {
+  $("#tableResumes").DataTable({
+    lengthChange: false,
+    pageLength: 5,
+    paging: true,
+    processing: true,
+    destroy: true,
+    serverSide: true,
+    sort: false,
+    searching: false,
+    ajax: $.fn.dataTable.pipeline({
+      pages: 5,
+      func: getResumes,
+    }),
+    columns: [
+      {
+        title: "ID",
+        render: function (data, type, row, meta) {
+          return `<a href="javascript:void(0)" onClick="viewResume('${row.ID}')">${row.ID}</a>`;
+        },
+      },
+      {
+        title: "Category",
+        render: function (data, type, row, meta) {
+          return row.Category || "";
+        },
+      },
+    ],
+  });
+};
+
+const getMatchResumes = async (job_id, top = 10) => {
+  if (!job_id) return;
+  return $.ajax({
+    url: `${apiHost}/api/v1/jobs/${job_id}/matches?top=${top}`,
+    method: "GET",
+    async: true,
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+  });
+};
+
+const initTableMatchResumes = async (id = "") => {
+  if (!id) return;
+  const matchResumes = await getMatchResumes(id);
+  console.log("initTableMatchResumes ~ matchResumes:", matchResumes);
+  $("#tableMatchResumes").DataTable({
+    // lengthChange: true,
+    pageLength: 10,
+    // paging: true,
+    processing: true,
+    destroy: true,
+    sort: false,
+    searching: false,
+    data: matchResumes.data,
+    columns: [
+      {
+        title: "ID",
+        render: function (data, type, row, meta) {
+          return `<a href="javascript:void(0)" onClick="viewResume('${row.resume.ID}')">${row.resume.ID}</a>`;
+        },
+      },
+      {
+        title: "Category",
+        render: function (data, type, row, meta) {
+          return row.resume?.Category || "";
+        },
+      },
+      {
+        title: "Similarity",
+        data: "similarity",
+        render: function (data, type, row, meta) {
+          return `${(row.similarity * 100).toFixed(2)}%`;
+        },
+      },
+    ],
+  });
+};
+
+const viewResume = async (resume_id) => {
+  if (!resume_id) return;
+  const resumeDetail = await getResumeDetail(resume_id);
+  const resume = resumeDetail.data;
+  console.log("viewResume ~ resume:", resume);
+
+  // reset info
+  $("#resumeId").text("");
+  $("#resumeCategory").text("");
+  $("#resumeSkills").empty();
+  $("#resumeDetail").empty();
+  // set info
+  $("#resumeId").text(resume.ID);
+  $("#resumeCategory").text(resume.Category);
+
+  // split skills
+  const skills = resume.Skills ?? [];
+  skills.forEach((skill) => {
+    $("#resumeSkills").append(
+      `<span class="badge bg-primary me-1">${skill}</span>`
+    );
+  });
+  $("#resumeDetail").append(resume.Resume_html);
+  // show modal
+  $("#resumeDetailModal").modal("show");
+};
+
 $(function () {
   $.fn.dataTable.pipeline = function (opts) {
     let conf = $.extend(
@@ -255,6 +443,7 @@ $(function () {
       },
       opts
     );
+    console.log("opts:", opts);
     let cacheLower = -1;
     let cacheUpper = null;
     let cacheLastRequest = null;
@@ -308,12 +497,9 @@ $(function () {
           $.extend(request, conf.data);
         }
         let json = {};
-        let out = [];
-        let total = 0;
         let offset = request.start;
         let limit = request.length;
-        let data_counter = 1;
-        getJobs(limit, offset).done((result) => {
+        opts.func(limit, offset).done((result) => {
           json.data = result.data;
           json.recordsTotal = result.total;
           json.recordsFiltered = result.total;
@@ -346,43 +532,6 @@ $(function () {
   });
 });
 
-const initTableJobs = () => {
-  $("#tableJobs").DataTable({
-    lengthChange: true,
-    pageLength: 10,
-    paging: true,
-    processing: true,
-    destroy: true,
-    serverSide: true,
-    sort: false,
-    searching: false,
-    ajax: $.fn.dataTable.pipeline({
-      pages: 5,
-    }),
-    columns: [
-      {
-        title: "Title",
-        data: "title",
-        render: function (data, type, row, meta) {
-          return `<a href="javascript:void(0)" onClick="viewJob('${row.job_id}')">${data}</a>`;
-        },
-      },
-      {
-        title: "Company",
-        data: "company_name",
-      },
-      {
-        title: "Industry",
-        data: "industry",
-      },
-    ],
-  });
-  $(".buttons-colvis").on("click", (e) => {
-    $(".dt-button-collection").css({
-      left: "-90px",
-    });
-  });
-};
 $(document).ready(async function () {
   await getJobCategories().then((response) => {
     const categories = response.data.map((item) => item);
@@ -398,6 +547,20 @@ $(document).ready(async function () {
     });
   });
 
+  await getIndustries().then((response) => {
+    const industries = response.data.map((item) => item);
+    console.log("getIndustries ~ industries:", industries);
+    // append option
+    $.each(industries, function (i, item) {
+      $("#selectIndustry").append(
+        $("<option>", {
+          value: item,
+          text: item,
+        })
+      );
+    });
+  });
+
   showChartCategoriesPostings();
 
   showChartIndustriesCompanies();
@@ -405,4 +568,18 @@ $(document).ready(async function () {
   updateStatistics();
 
   initTableJobs();
+});
+
+$(function () {
+  $("#matchResumesBtn").on("click", (e) => {
+    e.preventDefault();
+    const job_id = $("#matchResumesBtn").attr("data-id");
+    if (!job_id) return;
+
+    $("#matchResumesRow").removeClass("d-none");
+
+    initTableMatchResumes(job_id);
+
+    $("#jobDetailModal").modal("hide");
+  });
 });

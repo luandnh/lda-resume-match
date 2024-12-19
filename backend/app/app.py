@@ -98,7 +98,7 @@ async def read_top_companies(top: int = 10):
 async def read_resumes(limit: int = 10, offset: int = 0, category: str = ""):
     data = resumes_df
     if category:
-        data = resumes_df[resumes_df["category"] == category]
+        data = resumes_df[resumes_df["Category"] == category]
 
     return {
         "data": data[offset : offset + limit].to_dict(orient="records"),
