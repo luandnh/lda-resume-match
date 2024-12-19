@@ -30,20 +30,23 @@ resumes_df = pd.read_json(
 )
 
 # Step 1: Vectorize the text data
-vectorizer = CountVectorizer(stop_words='english')
-all_text = list(resumes_df['Feature']) + list(jobs_df['jdFeatures'])
+vectorizer = CountVectorizer(stop_words="english")
+all_text = list(resumes_df["Feature"]) + list(jobs_df["jdFeatures"])
 vectorized_text = vectorizer.fit_transform(all_text)
 
 # Step 2: Fit LDA
-lda = LatentDirichletAllocation(n_components=10, random_state=42)  # Assuming 3 topics for simplicity
+lda = LatentDirichletAllocation(
+    n_components=10, random_state=42
+)  # Assuming 3 topics for simplicity
 lda_matrix = lda.fit_transform(vectorized_text)
 
 # Step 3: Separate LDA outputs for resumes and job descriptions
-resume_topics = lda_matrix[:len(resumes_df)]
-job_topics = lda_matrix[len(resumes_df):]
+resume_topics = lda_matrix[: len(resumes_df)]
+job_topics = lda_matrix[len(resumes_df) :]
 
 # Step 4: Compute cosine similarity
 lda_similarity_matrix = cosine_similarity(job_topics, resume_topics)
+
 
 # api get list of jobs
 @app.get("/api/v1/jobs")
@@ -193,6 +196,7 @@ async def read_industries():
         "data": jobs_df["industry"].unique().tolist(),
     }
 
+
 # api find top matches for a job description
 @app.get("/api/v1/jobs/{job_id}/matches")
 async def read_matches(job_id: int, top: int = 5):
@@ -200,7 +204,7 @@ async def read_matches(job_id: int, top: int = 5):
     if len(job) == 0:
         raise HTTPException(status_code=404, detail="Job not found")
 
-    job_idx = jobs_df.index[jobs_df['job_id'] == job_id].tolist()[0]
+    job_idx = jobs_df.index[jobs_df["job_id"] == job_id].tolist()[0]
     top_resumes = lda_similarity_matrix[job_idx].argsort()[::-1][:top]  # Top 5 matches
     top_matches = []
     for resume_idx in top_resumes:
@@ -209,12 +213,10 @@ async def read_matches(job_id: int, top: int = 5):
         top_matches.append(
             {"resume": resume.to_dict(), "similarity": float(similarity)}
         )
-    
+
     top_matches = sorted(top_matches, key=lambda x: x["similarity"], reverse=True)
-    
-    return {
-        "data": top_matches,
-    }
+
+    return {"data": top_matches}
 
 
 if __name__ == "__main__":
