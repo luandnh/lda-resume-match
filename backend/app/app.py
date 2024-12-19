@@ -194,7 +194,7 @@ async def read_industries():
     }
 
 # api find top matches for a job description
-@app.get("/api/v1/jobs/{job_id}/matches_new")
+@app.get("/api/v1/jobs/{job_id}/matches")
 async def read_matches(job_id: int, top: int = 5):
     job = jobs_df[jobs_df["job_id"] == job_id]
     if len(job) == 0:
