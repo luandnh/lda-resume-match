@@ -1,0 +1,8 @@
+pandas
+numpy
+uvicorn
+fastapi
+wordcloud
+scikit-learn
+nltk
+PyPDF2
